@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namz Ajz - Premium TikTok Downloader</title>
+    <meta name="description" content="Download TikTok videos without watermark - single, multiple, or bulk profile downloads">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --secondary: #4D44DB;
+            --dark: #2A2A3C;
+            --light: #F8F9FA;
+            --success: #28A745;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #666;
+        }
+        
+        .tool-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        /* Tab styles */
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-btn {
+            padding: 0.8rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            position: relative;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Input and textarea styles */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .input-group input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .input-group input:focus {
+            border-color: var(--primary);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            resize: vertical;
+            font-family: inherit;
+            min-height: 150px;
+        }
+        
+        /* Progress bar styles */
+        .progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Video item styles */
+        .video-item {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .video-result {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .video-result:last-child {
+            border-bottom: none;
+        }
+        
+        /* Loading and result styles */
+        #loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .result-container {
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .video-preview {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        /* Features grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Namz Ajz</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="comparison.html">Comparison</a>
+                <a href="instagram.html">Instagram</a>
+                <a href="telegram.html">Telegram</a>
+                <a href="affiliate.html">Affiliate</a>
+                <a href="#" class="btn">Login</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Advanced TikTok Video Downloader</h1>
+                <p>Download any TikTok video without watermark - single videos, multiple at once, or entire profiles</p>
+            </div>
+        </section>
+        
+        <section class="container">
+            <div class="tool-card">
+                <h2><i class="fas fa-video"></i> TikTok Downloader</h2>
+                
+                <!-- Tab Navigation -->
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="single">Single Video</button>
+                    <button class="tab-btn" data-tab="multiple">Multiple Videos</button>
+                    <button class="tab-btn" data-tab="profile">Profile Download</button>
+                </div>
+                
+                <!-- Single Video Tab -->
+                <div class="tab-content active" id="single">
+                    <p>Download any TikTok video without watermark in HD quality</p>
+                    <div class="input-group">
+                        <input type="text" id="tiktokUrl" placeholder="Paste TikTok video URL here...">
+                        <button class="btn" id="downloadBtn">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Multiple Videos Tab -->
+                <div class="tab-content" id="multiple">
+                    <p>Download multiple TikTok videos at once (paste one URL per line)</p>
+                    <textarea id="multipleUrls" rows="5" placeholder="Paste multiple TikTok URLs here, one per line..."></textarea>
+                    <button class="btn" id="downloadMultipleBtn">
+                        <i class="fas fa-download"></i> Download All
+                    </button>
+                    <div id="multipleProgress" style="display: none; margin-top: 1rem;">
+                        <div class="progress-container">
+                            <div class="progress-bar" id="multipleProgressBar"></div>
+                        </div>
+                        <div id="multipleStatus">Preparing downloads...</div>
+                    </div>
+                </div>
+                
+                <!-- Profile Download Tab -->
+                <div class="tab-content" id="profile">
+                    <p>Download all videos from a TikTok profile</p>
+                    <div class="input-group">
+                        <input type="text" id="profileUsername" placeholder="Enter TikTok username (without @)">
+                        <button class="btn" id="downloadProfileBtn">
+                            <i class="fas fa-download"></i> Fetch Videos
+                        </button>
+                    </div>
+                    <div id="profileResults" style="display: none; margin-top: 1rem;">
+                        <h4>Available Videos</h4>
+                        <div id="profileVideoList"></div>
+                        <button class="btn" id="downloadProfileVideosBtn" style="margin-top: 1rem;">
+                            <i class="fas fa-download"></i> Download All
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Loading Indicator -->
+                <div id="loading" style="display: none;">
+                    <p><i class="fas fa-spinner fa-spin"></i> Processing your request...</p>
+                </div>
+                
+                <!-- Results Container -->
+                <div class="result-container" id="resultContainer">
+                    <h3>Download Results</h3>
+                    <div id="downloadResults">
+                        <!-- Results will be inserted here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Fast Downloads</h3>
+                    <p>High-speed downloads without watermarks in HD quality</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Bulk Processing</h3>
+                    <p>Download entire profiles or multiple videos with one click</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Friendly</h3>
+                    <p>Works perfectly on all devices, no app installation needed</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <p>&copy; 2023 Namz Ajz. All rights reserved.</p>
+        <div style="margin-top: 1rem;">
+            <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-facebook"></i></a>
+            <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+            <a href="#" style="color: white; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    btn.classList.add('active');
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // Clear previous results when switching tabs
+                    document.getElementById('resultContainer').style.display = 'none';
+                    document.getElementById('downloadResults').innerHTML = '';
+                });
+            });
+
+            // Single video download
+            const downloadBtn = document.getElementById('downloadBtn');
+            downloadBtn.addEventListener('click', downloadSingleVideo);
+
+            // Multiple videos download
+            const downloadMultipleBtn = document.getElementById('downloadMultipleBtn');
+            downloadMultipleBtn.addEventListener('click', downloadMultipleVideos);
+
+            // Profile download
+            const downloadProfileBtn = document.getElementById('downloadProfileBtn');
+            downloadProfileBtn.addEventListener('click', fetchProfileVideos);
+            const downloadProfileVideosBtn = document.getElementById('downloadProfileVideosBtn');
+            downloadProfileVideosBtn.addEventListener('click', downloadProfileVideos);
+
+            async function downloadSingleVideo() {
+                const url = document.getElementById('tiktokUrl').value.trim();
+                
+                if (!url.includes('tiktok.com')) {
+                    alert('Please enter a valid TikTok URL');
+                    return;
+                }
+                
+                showLoading();
+                
+                try {
+                    const videoData = await fetchVideoData(url);
+                    displayDownloadResult([videoData]);
+                } catch (error) {
+                    alert('Error: ' + error.message);
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            async function downloadMultipleVideos() {
+                const urlsText = document.getElementById('multipleUrls').value.trim();
+                if (!urlsText) {
+                    alert('Please enter at least one TikTok URL');
+                    return;
+                }
+                
+                const urls = urlsText.split('\n').filter(url => url.trim() !== '');
+                const validUrls = urls.filter(url => url.includes('tiktok.com'));
+                
+                if (validUrls.length === 0) {
+                    alert('No valid TikTok URLs found');
+                    return;
+                }
+                
+                showMultipleProgress(validUrls.length);
+                
+                try {
+                    const results = [];
+                    for (let i = 0; i < validUrls.length; i++) {
+                        updateMultipleProgress(i + 1, validUrls.length, `Processing video ${i + 1} of ${validUrls.length}`);
+                        
+                        try {
+                            const videoData = await fetchVideoData(validUrls[i]);
+                            results.push(videoData);
+                        } catch (error) {
+                            console.error(`Failed to download ${validUrls[i]}:`, error);
+                            // Continue with next video even if one fails
+                        }
+                        
+                        // Add slight delay between requests to avoid rate limiting
+                        if (i < validUrls.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    }
+                    
+                    displayDownloadResult(results);
+                } catch (error) {
+                    alert('Error during batch download: ' + error.message);
+                } finally {
+                    hideMultipleProgress();
+                }
+            }
+
+            async function fetchProfileVideos() {
+                const username = document.getElementById('profileUsername').value.trim();
+                if (!username) {
+                    alert('Please enter a TikTok username');
+                    return;
+                }
+                
+                showLoading();
+                
+                try {
+                    // In a real implementation, you would need a backend service to scrape profile videos
+                    const profileVideos = await fetchProfileVideosFromAPI(username);
+                    
+                    const videoList = document.getElementById('profileVideoList');
+                    videoList.innerHTML = '';
+                    
+                    if (profileVideos.length === 0) {
+                        videoList.innerHTML = '<p>No videos found for this profile</p>';
+                        return;
+                    }
+                    
+                    profileVideos.forEach(video => {
+                        const videoItem = document.createElement('div');
+                        videoItem.className = 'video-item';
+                        videoItem.innerHTML = `
+                            <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                                <input type="checkbox" class="video-checkbox" checked 
+                                       data-url="${video.url}" 
+                                       data-id="${video.id}">
+                                <img src="${video.thumbnail}" width="80" style="margin: 0 1rem; border-radius: 4px;">
+                                <span style="flex: 1;">${video.description || 'TikTok video'}</span>
+                            </div>
+                        `;
+                        videoList.appendChild(videoItem);
+                    });
+                    
+                    document.getElementById('profileResults').style.display = 'block';
+                } catch (error) {
+                    alert('Error fetching profile videos: ' + error.message);
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            async function downloadProfileVideos() {
+                const checkboxes = document.querySelectorAll('.video-checkbox:checked');
+                if (checkboxes.length === 0) {
+                    alert('Please select at least one video to download');
+                    return;
+                }
+                
+                const videosToDownload = Array.from(checkboxes).map(checkbox => ({
+                    url: checkbox.dataset.url,
+                    id: checkbox.dataset.id
+                }));
+                
+                showMultipleProgress(videosToDownload.length);
+                
+                try {
+                    const results = [];
+                    for (let i = 0; i < videosToDownload.length; i++) {
+                        updateMultipleProgress(i + 1, videosToDownload.length, 
+                            `Processing video ${i + 1} of ${videosToDownload.length}`);
+                        
+                        try {
+                            const videoData = await fetchVideoData(videosToDownload[i].url);
+                            results.push(videoData);
+                        } catch (error) {
+                            console.error(`Failed to download video ${videosToDownload[i].id}:`, error);
+                        }
+                        
+                        // Add slight delay between requests to avoid rate limiting
+                        if (i < videosToDownload.length - 1) {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                        }
+                    }
+                    
+                    displayDownloadResult(results);
+                } catch (error) {
+                    alert('Error during profile download: ' + error.message);
+                } finally {
+                    hideMultipleProgress();
+                }
+            }
+
+            // Helper functions
+            async function fetchVideoData(url) {
+                // In production, you would use your own backend API
+                // This example uses a free API (note: may have limitations)
+                const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                if (data.data && data.data.play) {
+                    return {
+                        url: data.data.play,
+                        thumbnail: data.data.cover,
+                        title: data.data.title || 'TikTok Video',
+                        downloadUrl: data.data.play
+                    };
+                }
+                
+                throw new Error('Failed to fetch video data');
+            }
+
+            async function fetchProfileVideosFromAPI(username) {
+                // This is a mock implementation - in production you would need:
+                // 1. A backend service that can scrape TikTok profiles
+                // 2. Proper error handling and rate limiting
+                
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Mock data - in reality you would fetch this from a backend service
+                const mockVideos = [];
+                const videoCount = Math.floor(Math.random() * 10) + 3; // 3-12 mock videos
+                
+                for (let i = 1; i <= videoCount; i++) {
+                    mockVideos.push({
+                        id: `${i}`,
+                        url: `https://www.tiktok.com/@${username}/video/${Math.floor(Math.random() * 100000000)}`,
+                        thumbnail: `https://picsum.photos/200/300?random=${i}`,
+                        description: `TikTok video #${i} from @${username}`
+                    });
+                }
+                
+                return mockVideos;
+            }
+
+            function displayDownloadResult(videos) {
+                const resultsContainer = document.getElementById('downloadResults');
+                resultsContainer.innerHTML = '';
+                
+                if (videos.length === 0) {
+                    resultsContainer.innerHTML = '<p>No videos were downloaded successfully.</p>';
+                    document.getElementById('resultContainer').style.display = 'block';
+                    return;
+                }
+                
+                videos.forEach(video => {
+                    const videoElement = document.createElement('div');
+                    videoElement.className = 'video-result';
+                    videoElement.innerHTML = `
+                        <div style="margin-bottom: 1rem;">
+                            <h4>${video.title}</h4>
+                            <video controls src="${video.url}" style="max-width: 100%; border-radius: 8px;"></video>
+                        </div>
+                        <a href="${video.downloadUrl}" class="btn" download="tiktok_${Date.now()}.mp4">
+                            <i class="fas fa-download"></i> Download Video
+                        </a>
+                    `;
+                    resultsContainer.appendChild(videoElement);
+                });
+                
+                document.getElementById('resultContainer').style.display = 'block';
+            }
+
+            function showLoading() {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('resultContainer').style.display = 'none';
+            }
+
+            function hideLoading() {
+                document.getElementById('loading').style.display = 'none';
+            }
+
+            function showMultipleProgress(total) {
+                document.getElementById('multipleProgress').style.display = 'block';
+                updateMultipleProgress(0, total, 'Starting downloads...');
+            }
+
+            function updateMultipleProgress(current, total, message) {
+                const progressPercent = Math.round((current / total) * 100);
+                document.getElementById('multipleProgressBar').style.width = `${progressPercent}%`;
+                document.getElementById('multipleStatus').textContent = message;
+            }
+
+            function hideMultipleProgress() {
+                document.getElementById('multipleProgress').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
